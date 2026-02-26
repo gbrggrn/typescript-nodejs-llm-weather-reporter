@@ -137,3 +137,20 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# TypeScript compilation output
+dist/
+build/
+
+# SQLite Database files (Do not commit your historical weather/vectors)
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-shm
+*.db-wal
+
+# Windows specific (Since you are building on a Windows ecosystem)
+Thumbs.db
+ehthumbs.db
+Desktop.ini
