@@ -1,0 +1,32 @@
+{
+  "name": "typescript-nodejs-llm-weather-reporter",
+  "version": "1.0.0",
+  "description": "Weather reporter that pulls data from SMHI OpenAPI and creates real-time readable weather reports via an LLM.",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gbrggrn/typescript-nodejs-llm-weather-reporter.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gbrggrn/typescript-nodejs-llm-weather-reporter/issues"
+  },
+  "homepage": "https://github.com/gbrggrn/typescript-nodejs-llm-weather-reporter#readme",
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^25.3.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.6.2",
+    "dotenv": "^17.3.1",
+    "ollama": "^0.6.3"
+  }
+}
