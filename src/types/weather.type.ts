@@ -3,9 +3,14 @@ export interface Weather {
         min: number,
         max: number
     };
-    rainfallMm: number,
-    pressureMbs: number,
+    rainfallMonth: number,
+    rainfallDay: number,
+    rainfallHour: number,
+    pressureHPa: number,
     wind: number,
-    riskOfThunder: number,
-    soilTemp: number
+    windOrientDegrees: number,
+    stateOfGroundCode: number,
+    dewPoint: number,
+    relativeHumidity: number,
+    sunshineLatestHour: number
 }
