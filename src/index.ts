@@ -1,30 +1,25 @@
-import { generateScheduleData as scheduleClient } from './io/ollama-client.js'
-import { getWeather } from '../src/io/weather-api.js'
+import { generateForecast as scheduleClient } from './io/ollama-client.js'
+import { getWeatherData } from '../src/io/weather-api.js'
+import { getForecast } from '../src/io/weather-api.js'
 
-async function testWeather(): Promise<string> {
+const basePrompt: string = 'You are an expert agronomist and meteorologist. Your job is to take the weather data provided and generate a current weather report. Continous text and limit yourself to 500 characters. Data provided: '
+
+async function testWeather(){
     console.log("[index]Fetching weather...");
 
-    const weatherData = await getWeather(59.978816, 18.847416)
+    const weatherData = await getWeatherData(59.978816, 18.847416)
 
     console.dir(weatherData, { depth: null, colors: true})
 
-    var dataString: string =
-        `dewpoint(C): ${weatherData.dewPoint} | `+
-        `min daily temp(C): ${weatherData.dayTemp.min} | `+
-        `max daily temp(C): ${weatherData.dayTemp.max} |`+
-        `rainfallMonth(mm): ${weatherData.rainfallMonth} |`+
-        `rainfallDay(mm): ${weatherData.rainfallDay} |`+
-        `rainfallHour(mm): ${weatherData.rainfallHour} |`+
-        `pressure(hPa): ${weatherData.pressureHPa} |`+
-        `wind(m/s): ${weatherData.wind} |`+
-        `wind orientation(degrees): ${weatherData.windOrientDegrees} |`+
-        `relative humidity(%): ${weatherData.relativeHumidity} |`+
-        `sunshine latest hour: ${weatherData.sunshineLatestHour}`;
+    const forecastPackage = [
+        { period: '24h', data: getForecast(weatherData, 24, '0-24hrs') },
+        { period: '3d', data: getForecast(weatherData, 72, '3 days') },
+        { period: '6d', data: getForecast(weatherData, 144, '6 days') },
+        { period: '10d', data: getForecast(weatherData, 240, '10 days') }
+    ]
 
-    return dataString
+    scheduleClient(basePrompt, forecastPackage)
 }
-const basePrompt: string = 'You are an expert agronomist and meteorologist. Your job is to take the weather data provided and generate a current weather report. Continous text and limit yourself to 500 characters. Data provided: '
 
-
-scheduleClient(basePrompt, await testWeather())
+testWeather();
         
