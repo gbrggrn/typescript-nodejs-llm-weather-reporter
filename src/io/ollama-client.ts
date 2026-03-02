@@ -18,13 +18,13 @@ async function pingAI() {
     }
 }
 
-export async function generateScheduleData() {
+export async function generateScheduleData(basePrompt: string, data: string) {
     console.log("[ollama-client] Generating schedule data...")
 
     try {
         const response = await remoteOllama.generate({
             model: 'llama3.1',
-            prompt: 'A prompt will be added here. For now just respond with a limerick about horses.',
+            prompt: basePrompt + ' | ' + data,
             stream: false
         });
 
