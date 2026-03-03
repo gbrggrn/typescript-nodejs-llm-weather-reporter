@@ -2,7 +2,7 @@ import { generateForecast as scheduleClient } from './io/ollama-client.js'
 import { getWeatherData } from '../src/io/weather-api.js'
 import { getForecast } from '../src/io/weather-api.js'
 
-const basePrompt: string = 'You are an expert agronomist and meteorologist. Your job is to take the weather data provided and generate a current weather report. Continous text and limit yourself to 500 characters. Data provided: '
+const basePrompt = "You are a weather data analyst. I am providing a JSON array of four weather buckets (Today, Tomorrow, Rest of Week, Next Week). Your task: 1. Extract the minimum and maximum temperature from the entire 10-day period. 2. Calculate the total rainfall across all buckets. 3. Identify the windiest period. 4. Provide a 2-sentence summary of the weather trend. Please be terse and factual.";
 
 async function testWeather(){
     console.log("[index]Fetching weather...");
@@ -12,10 +12,10 @@ async function testWeather(){
     console.dir(weatherData, { depth: null, colors: true})
 
     const forecastPackage = [
-        { period: '24h', data: getForecast(weatherData, 24, '0-24hrs') },
-        { period: '3d', data: getForecast(weatherData, 72, '3 days') },
-        { period: '6d', data: getForecast(weatherData, 144, '6 days') },
-        { period: '10d', data: getForecast(weatherData, 240, '10 days') }
+        { period: 'Today', data: getForecast(weatherData, 0, 24, 'Immediate') },
+        { period: 'Tomorrow', data: getForecast(weatherData, 24, 24, 'Short-term') },
+        { period: 'Rest of week', data: getForecast(weatherData, 48, 120, 'Mid-term') },
+        { period: 'Next week', data: getForecast(weatherData, 168, 72, 'Long-term') }
     ]
 
     scheduleClient(basePrompt, forecastPackage)
