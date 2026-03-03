@@ -17,7 +17,7 @@ export async function generateForecast(basePrompt: string, data: ForecastPackage
     try {
         const response = await remoteOllama.generate({
             model: 'llama3.1',
-            prompt: finalPrompt + "\n\nIMPORTANT: Start your response immediately with the first header. No conversational filler.",
+            prompt: finalPrompt,
             stream: false
         });
 
