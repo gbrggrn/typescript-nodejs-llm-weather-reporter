@@ -12,7 +12,7 @@ export async function generateForecast(basePrompt: string, data: ForecastPackage
     console.log("[ollama-client] Generating forecast...")
 
     const weatherDataString = JSON.stringify(data, null, 2)
-    const finalPrompt = `${basePrompt} \n\n ### DATA INPUT (JSON):\n${weatherDataString}`
+    const finalPrompt = `${basePrompt} \n\n ### CLIMATE WINDOWS DATA INPUT (JSON):\n${weatherDataString}`
 
     try {
         const response = await remoteOllama.generate({
