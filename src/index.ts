@@ -1,8 +1,9 @@
 import { generateForecast as scheduleClient } from './io/ollama-client.js'
 import { getWeatherData } from '../src/io/weather-api.js'
 import { getForecast } from '../src/io/weather-api.js'
+import { getBasePrompt } from './prompts/prompt-helper.js'
 
-const basePrompt = "You are a weather data analyst. I am providing a JSON array of four weather buckets (Today, Tomorrow, Rest of Week, Next Week). Your task: 1. Extract the minimum and maximum temperature from the entire 10-day period. 2. Calculate the total rainfall across all buckets. 3. Identify the windiest period. 4. Provide a 2-sentence summary of the weather trend. Please be terse and factual.";
+const basePrompt = getBasePrompt();
 
 async function testWeather(){
     console.log("[index]Fetching weather...");
