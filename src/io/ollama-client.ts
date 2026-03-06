@@ -3,11 +3,20 @@ import type { WeatherForecast } from '../types/weather-forecast.type.js';
 
 const remoteOllama = new Ollama({host: 'http://192.168.39.179:11434'})
 
+/**
+ * Package to make LLM-friendly formatting easier.
+ */
 export interface ForecastPackages {
     period: string,
     data: WeatherForecast
 }
 
+/**
+ * Stringifies a JSON payload and forces that + a base prompt to a remoteOllama model.
+ * Prints the response to the console.
+ * @param basePrompt The base prompt the model ingests
+ * @param data The JSON formatted data
+ */
 export async function generateForecast(basePrompt: string, data: ForecastPackages[]) {
     console.log("[ollama-client] Generating forecast...")
 
@@ -16,7 +25,7 @@ export async function generateForecast(basePrompt: string, data: ForecastPackage
 
     try {
         const response = await remoteOllama.generate({
-            model: 'llama3.1',
+            model: 'llama3.1', // Switch model here
             prompt: finalPrompt,
             stream: false
         });
