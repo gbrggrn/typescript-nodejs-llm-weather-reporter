@@ -12,10 +12,10 @@ export interface ForecastPackages {
 }
 
 /**
- * Stringifies a JSON payload and forces that + a base prompt to a remoteOllama model.
+ * Stringifies the ForecastPackages forces that + a base prompt to a remoteOllama model.
  * Prints the response to the console.
  * @param basePrompt The base prompt the model ingests
- * @param data The JSON formatted data
+ * @param data ForecastPackages to be ingested
  */
 export async function generateForecast(basePrompt: string, data: ForecastPackages[]) {
     console.log("[ollama-client] Generating forecast...")

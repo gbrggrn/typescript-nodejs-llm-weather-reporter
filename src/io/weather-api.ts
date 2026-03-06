@@ -1,8 +1,11 @@
-import { argv } from "node:process";
 import type { WeatherForecast } from "../types/weather-forecast.type.js";
-import { type Weather } from "../types/weather.type.js"
 
-
+/**
+ * Fetches a response from SMHIs pmp3g based on lon/lat.
+ * @param lat latitude of the location to retrieve weather data from
+ * @param lon longitude of the location to retrieve weather data from
+ * @returns The JSON response from pmp3g (SMHI API)
+ */
 export async function getWeatherData(lat: number, lon: number): Promise<any> {
     const url = `https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/${lon}/lat/${lat}/data.json`
 
@@ -11,30 +14,45 @@ export async function getWeatherData(lat: number, lon: number): Promise<any> {
     return await response.json();
 }
 
+/**
+ * Calculates the time window to retrieve data from.
+ * Retrieves the values based on pmp3g parameters and formats to WeatherForecast before return.
+ * @param data The time-series organized pmp3g JSON payload
+ * @param startOffset The offset that marks the start of the time-series this call will calculate
+ * @param duration How far from the startOffset this call is meant to calculate
+ * @param label The label of the forecast this call will generate (ex. Immediate)
+ * @returns Extracted data packaged as WeatherForecast
+ */
 export function getForecast(
     data: any, 
     startOffset: number, 
     duration: number,
     label: string): WeatherForecast {
+    
+    // Calculate the start-, and end time for this call
     const now = new Date();
     const startTime = new Date(now.getTime() + (startOffset * 60 * 60 * 1000))
     const endTime = new Date(startTime.getTime() + (duration * 60 * 60 * 1000));
 
+    // Filter out the bucket that represents the time this call is to cover
     const bucket = data.timeSeries.filter((ts: any) => {
         const validTime = new Date(ts.validTime);
         return validTime >= startTime && validTime <= endTime;
     });
 
+    // Helper to get the values from the time-series based on the API parameters
     const getValues = (param: string) => bucket.map((ts:any) => 
         ts.parameters.find((p: any) => p.name === param)?.values[0] ?? 0
     );
 
+    // pmp3g parameters
     const temps = getValues('t');
     const rainFall = getValues('pmean');
     const wind = getValues('ws');
     const pressure = getValues('msl');
     const humidity = getValues('r');
 
+    // Format and return
     return {
         periodLabel: label,
         minTemp: Math.min(...temps),
@@ -46,6 +64,12 @@ export function getForecast(
     }
 }
 
+/**
+ * Helper to calculate total volume (of rain) in a filtered bucket of time-series.
+ * This is because pmp3g only returns intensity per time-series indice.
+ * @param bucket The bucket of time-series indices to calculate on
+ * @returns The total volume as a number (mm)
+ */
 function calculateTotalVolume(bucket: any): number {
     let totalVolume = 0;
     for (let i = 0; i < bucket.length; i++) {
@@ -60,6 +84,11 @@ function calculateTotalVolume(bucket: any): number {
     return totalVolume;
 }
 
+/**
+ * Helper to calculate avarage.
+ * @param data data to perform the calculation on
+ * @returns the avarage as a number
+ */
 function avg(data: any): number {
     return data.reduce((sum: number, val: number) => sum + val, 0) / data.length
 }
