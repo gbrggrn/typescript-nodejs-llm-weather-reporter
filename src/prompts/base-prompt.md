@@ -17,8 +17,5 @@ Task: Evaluate the provided Climate Windows (JSON) and generate a garden status 
 (Outlook for days 7-10.)
 - Frost Risk Level: [Evaluate based on minTemp]
 
-### Possible Gardening Activities
-(Based on temps and rain, suggest 2-3 specific activities.)
-
 ### Additional Details
 (Note specifics like wind scorch or humidity trends.)
