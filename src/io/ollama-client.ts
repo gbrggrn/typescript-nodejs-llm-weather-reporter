@@ -42,7 +42,7 @@ export interface PlantPackages {
 }
 
 export async function generateGardenForecast(gardenPrompt: string, data: PlantPackages[], forecast: string): Promise<string>{
-    console.log("[ollama-client] Generating garden forecast")
+    console.log("[ollama-client] Generating GARDEN plan:")
 
     const promptFinal = `${gardenPrompt} \n\n ### PLANTS INPUT:\n${data}\n\n ### WEATHER FORECAST: ${forecast}`
 
